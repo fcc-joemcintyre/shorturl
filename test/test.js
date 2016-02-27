@@ -9,7 +9,7 @@ const processCommand = require ("../lib/cmd").processCommand;
 const server = require ("../lib/server");
 
 before (function () {
-  server.start ("http", "localhost", 3000);
+  server.start ("http", "localhost", 3000, false);
 });
 
 describe ("test server", function () {
@@ -81,77 +81,77 @@ describe ("cmd", function () {
   describe ("empty command", function () {
     it ("should not fail", function () {
       let cmd = processCommand ([]);
-      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"http", host:"localhost", port:3000});
+      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"http", host:"localhost", port:3000, paas:false });
     });
   });
 
   describe ("invalid standalone option", function () {
     it ("should fail with code 1", function () {
       let cmd = processCommand (["-j"]);
-      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"http", host:"localhost", port:3000});
+      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"http", host:"localhost", port:3000, paas:false });
     });
   });
 
   describe ("invalid settings option", function () {
     it ("should fail with code 1", function () {
       let cmd = processCommand (["-j=foo.js"]);
-      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"http", host:"localhost", port:3000});
+      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"http", host:"localhost", port:3000, paas:false });
     });
   });
 
   describe ("proper protocol argument (http)", function () {
     it ("should succeed", function () {
       let cmd = processCommand (["--protocol=http"]);
-      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"http", host:"localhost", port:3000});
+      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"http", host:"localhost", port:3000, paas:false });
     });
   });
 
   describe ("proper protocol argument (https)", function () {
     it ("should succeed", function () {
       let cmd = processCommand (["--protocol=https"]);
-      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"https", host:"localhost", port:3000});
+      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"https", host:"localhost", port:3000, paas:false });
     });
   });
 
   describe ("invalid protocol (ftp)", function () {
     it ("should fail", function () {
       let cmd = processCommand (["--protocol=ftp"]);
-      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"ftp", host:"localhost", port:3000});
+      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"ftp", host:"localhost", port:3000, paas:false });
     });
   });
 
   describe ("proper host argument", function () {
     it ("should succeed", function () {
       let cmd = processCommand (["--host=example.com"]);
-      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"http", host:"example.com", port:3000});
+      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"http", host:"example.com", port:3000, paas:false });
     });
   });
 
   describe ("proper port argument", function () {
     it ("should succeed", function () {
       let cmd = processCommand (["-p=2000"]);
-      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"http", host:"localhost", port:2000});
+      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"http", host:"localhost", port:2000, paas:false });
     });
   });
 
   describe ("port out of range (negative)", function () {
     it ("should fail", function () {
       let cmd = processCommand (["-p=-1"]);
-      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"http", host:"localhost", port:-1});
+      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"http", host:"localhost", port:-1, paas:false });
     });
   });
 
   describe ("port out of range (positive)", function () {
     it ("should fail", function () {
       let cmd = processCommand (["-p=200000"]);
-      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"http", host:"localhost", port:200000});
+      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"http", host:"localhost", port:200000, paas:false });
     });
   });
 
   describe ("port not an integer", function () {
     it ("should fail", function () {
       let cmd = processCommand (["-p=2000.5"]);
-      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"http", host:"localhost", port:2000.5});
+      assert.deepStrictEqual (cmd, {code:1, exit:true, protocol:"http", host:"localhost", port:2000.5, paas:false });
     });
   });
 
@@ -164,21 +164,28 @@ describe ("cmd", function () {
     });
   });
 
+  describe ("paas option", function () {
+    it ("should succeed", function () {
+      let cmd = processCommand (["--paas"]);
+      assert.deepStrictEqual (cmd, {code:0, exit:false, protocol:"http", host:"localhost", port:3000, paas:true });
+    });
+  });
+
   describe ("unary help command", function () {
     it ("should succeed", function () {
       let cmd = processCommand (["-h"]);
-      assert.deepStrictEqual (cmd, {code:0, exit:true, protocol:"http", host:"localhost", port:3000});
+      assert.deepStrictEqual (cmd, {code:0, exit:true, protocol:"http", host:"localhost", port:3000, paas:false });
       cmd = processCommand (["--help"]);
-      assert.deepStrictEqual (cmd, {code:0, exit:true, protocol:"http", host:"localhost", port:3000});
+      assert.deepStrictEqual (cmd, {code:0, exit:true, protocol:"http", host:"localhost", port:3000, paas:false });
     });
   });
 
   describe ("help in command", function () {
     it ("should succeed", function () {
       let cmd = processCommand (["-p=2000", "-h"]);
-      assert.deepStrictEqual (cmd, {code:0, exit:true, protocol:"http", host:"localhost", port:2000});
+      assert.deepStrictEqual (cmd, {code:0, exit:true, protocol:"http", host:"localhost", port:2000, paas:false });
       cmd = processCommand (["-p=2000", "--help"]);
-      assert.deepStrictEqual (cmd, {code:0, exit:true, protocol:"http", host:"localhost", port:2000});
+      assert.deepStrictEqual (cmd, {code:0, exit:true, protocol:"http", host:"localhost", port:2000, paas:false });
     });
   });
 });

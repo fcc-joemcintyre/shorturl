@@ -22,7 +22,7 @@ For example, using the following service call,
 
 > https://shorturl-jm.herokuapp.com/api/url?url=http://www.freecodecamp.com/challenges/url-shortener-microservice
 
-The result is a JSON message with the format
+The result is a JSON message, status 200, with the format
 
     {
       "originalURL":"http://www.freecodecamp.com/challenges/url-shortener-microservice",
@@ -32,7 +32,13 @@ The result is a JSON message with the format
 When using the new *shortURL*, the browser will be redirected to
 the *originalURL*.
 
-If any elements are not valid, null will be returned for those values.
+If the URL is not valid, the result will be a JSON error message,
+status 200, with the format
+
+    {
+      "errorCode": 1,
+      "message": "Invalid URL"
+    }
 
 ## License
 MIT
