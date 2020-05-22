@@ -1,19 +1,19 @@
-const assert = require ('assert');
-const fetch = require ('node-fetch');
-const processCommand = require ('../lib/cmd').processCommand;
-const server = require ('../lib/server');
+import assert from 'assert';
+import fetch from 'node-fetch';
+import { processCommand } from '../lib/cmd.js';
+import * as server from '../lib/server.js';
 
-before (async function () {
+before (async () => {
   await server.start ('http', 'localhost', 3000, false);
 });
 
-after (async function () {
+after (async () => {
   await server.stop ();
 });
 
-describe ('test server', function () {
-  describe ('/', function () {
-    it ('should return 200 with home page', async function () {
+describe ('test server', () => {
+  describe ('/', () => {
+    it ('should return 200 with home page', async () => {
       const res = await fetch ('http://localhost:3000/');
       assert (res.status === 200);
       const body = await res.text ();
@@ -21,8 +21,8 @@ describe ('test server', function () {
     });
   });
 
-  describe ('invalid URL content', function () {
-    it ('should return 200 with home page', async function () {
+  describe ('invalid URL content', () => {
+    it ('should return 200 with home page', async () => {
       const res = await fetch ('http://localhost:3000/dummy');
       assert (res.status === 200);
       const body = await res.text ();
@@ -30,8 +30,8 @@ describe ('test server', function () {
     });
   });
 
-  describe ('valid request', function () {
-    it ('should return JSON object with the shortened URL', async function () {
+  describe ('valid request', () => {
+    it ('should return JSON object with the shortened URL', async () => {
       const res = await fetch ('http://localhost:3000/api/url?url=http://www.infoworld.com');
       assert (res.status === 200);
       const body = await res.json ();
@@ -40,8 +40,8 @@ describe ('test server', function () {
     });
   });
 
-  describe ('invalid request', function () {
-    it ('should return errorCode 1 in response', async function () {
+  describe ('invalid request', () => {
+    it ('should return errorCode 1 in response', async () => {
       const res = await fetch ('http://localhost:3000/api/url?url=notaurl');
       assert (res.status === 200);
       const body = await res.json ();
@@ -50,86 +50,86 @@ describe ('test server', function () {
   });
 });
 
-describe ('cmd', function () {
-  describe ('empty command', function () {
-    it ('should not fail', function () {
+describe ('cmd', () => {
+  describe ('empty command', () => {
+    it ('should not fail', () => {
       const cmd = processCommand ([]);
       assert.deepStrictEqual (cmd, { code: 0, exit: false, protocol: 'http', host: 'localhost', port: 3000, paas: false });
     });
   });
 
-  describe ('invalid standalone option', function () {
-    it ('should fail with code 1', function () {
+  describe ('invalid standalone option', () => {
+    it ('should fail with code 1', () => {
       const cmd = processCommand (['-j']);
       assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: 3000, paas: false });
     });
   });
 
-  describe ('invalid settings option', function () {
-    it ('should fail with code 1', function () {
+  describe ('invalid settings option', () => {
+    it ('should fail with code 1', () => {
       const cmd = processCommand (['-j=foo.js']);
       assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: 3000, paas: false });
     });
   });
 
-  describe ('proper protocol argument (http)', function () {
-    it ('should succeed', function () {
+  describe ('proper protocol argument (http)', () => {
+    it ('should succeed', () => {
       const cmd = processCommand (['--protocol=http']);
       assert.deepStrictEqual (cmd, { code: 0, exit: false, protocol: 'http', host: 'localhost', port: 3000, paas: false });
     });
   });
 
-  describe ('proper protocol argument (https)', function () {
-    it ('should succeed', function () {
+  describe ('proper protocol argument (https)', () => {
+    it ('should succeed', () => {
       const cmd = processCommand (['--protocol=https']);
       assert.deepStrictEqual (cmd, { code: 0, exit: false, protocol: 'https', host: 'localhost', port: 3000, paas: false });
     });
   });
 
-  describe ('invalid protocol (ftp)', function () {
-    it ('should fail', function () {
+  describe ('invalid protocol (ftp)', () => {
+    it ('should fail', () => {
       const cmd = processCommand (['--protocol=ftp']);
       assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'ftp', host: 'localhost', port: 3000, paas: false });
     });
   });
 
-  describe ('proper host argument', function () {
-    it ('should succeed', function () {
+  describe ('proper host argument', () => {
+    it ('should succeed', () => {
       const cmd = processCommand (['--host=example.com']);
       assert.deepStrictEqual (cmd, { code: 0, exit: false, protocol: 'http', host: 'example.com', port: 3000, paas: false });
     });
   });
 
-  describe ('proper port argument', function () {
-    it ('should succeed', function () {
+  describe ('proper port argument', () => {
+    it ('should succeed', () => {
       const cmd = processCommand (['-p=2000']);
       assert.deepStrictEqual (cmd, { code: 0, exit: false, protocol: 'http', host: 'localhost', port: 2000, paas: false });
     });
   });
 
-  describe ('port out of range (negative)', function () {
-    it ('should fail', function () {
+  describe ('port out of range (negative)', () => {
+    it ('should fail', () => {
       const cmd = processCommand (['-p=-1']);
       assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: -1, paas: false });
     });
   });
 
-  describe ('port out of range (positive)', function () {
-    it ('should fail', function () {
+  describe ('port out of range (positive)', () => {
+    it ('should fail', () => {
       const cmd = processCommand (['-p=200000']);
       assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: 200000, paas: false });
     });
   });
 
-  describe ('port not an integer', function () {
-    it ('should fail', function () {
+  describe ('port not an integer', () => {
+    it ('should fail', () => {
       const cmd = processCommand (['-p=2000.5']);
       assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: 2000.5, paas: false });
     });
   });
 
-  describe ('port not a number', function () {
-    it ('should fail', function () {
+  describe ('port not a number', () => {
+    it ('should fail', () => {
       const cmd = processCommand (['-p=ABC']);
       assert.deepStrictEqual (cmd.code, 1);
       assert.deepStrictEqual (cmd.exit, true);
@@ -137,15 +137,15 @@ describe ('cmd', function () {
     });
   });
 
-  describe ('paas option', function () {
-    it ('should succeed', function () {
+  describe ('paas option', () => {
+    it ('should succeed', () => {
       const cmd = processCommand (['--paas']);
       assert.deepStrictEqual (cmd, { code: 0, exit: false, protocol: 'http', host: 'localhost', port: 3000, paas: true });
     });
   });
 
-  describe ('unary help command', function () {
-    it ('should succeed', function () {
+  describe ('unary help command', () => {
+    it ('should succeed', () => {
       let cmd = processCommand (['-h']);
       assert.deepStrictEqual (cmd, { code: 0, exit: true, protocol: 'http', host: 'localhost', port: 3000, paas: false });
       cmd = processCommand (['--help']);
@@ -153,8 +153,8 @@ describe ('cmd', function () {
     });
   });
 
-  describe ('help in command', function () {
-    it ('should succeed', function () {
+  describe ('help in command', () => {
+    it ('should succeed', () => {
       let cmd = processCommand (['-p=2000', '-h']);
       assert.deepStrictEqual (cmd, { code: 0, exit: true, protocol: 'http', host: 'localhost', port: 2000, paas: false });
       cmd = processCommand (['-p=2000', '--help']);
