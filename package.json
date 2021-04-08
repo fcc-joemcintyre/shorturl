@@ -2,7 +2,7 @@
   "name": "shorturl",
   "author": "Joe McIntyre (j_h_mcintyre@yahoo.com)",
   "description": "URL Shortener service",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "repository": {
     "type": "git",
@@ -18,17 +18,15 @@
     "lint": "eslint lib/** && eslint test/**"
   },
   "devDependencies": {
-    "@cygns/eslint-config": "5.0.0",
-    "eslint": "7.9.0",
-    "eslint-plugin-import": "2.22.0",
-    "eslint-plugin-react": "7.20.6",
-    "eslint-plugin-react-hooks": "4.1.2",
-    "mocha": "8.1.3",
+    "@cygns/eslint-config-node": "6.0.0",
+    "eslint": "7.23.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jsdoc": "32.3.0",
+    "mocha": "8.3.2",
     "node-fetch": "2.6.1",
-    "nodemon": "2.0.4"
+    "nodemon": "2.0.7"
   },
   "engines": {
-    "node": "^14.11",
-    "yarn": "^1.22"
+    "node": "^15.14"
   }
 }
