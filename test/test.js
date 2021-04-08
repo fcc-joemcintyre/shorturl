@@ -89,7 +89,7 @@ describe ('cmd', () => {
   describe ('invalid protocol (ftp)', () => {
     it ('should fail', () => {
       const cmd = processCommand (['--protocol=ftp']);
-      assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'ftp', host: 'localhost', port: 3000, paas: false });
+      assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: '', host: 'localhost', port: 3000, paas: false });
     });
   });
 

@@ -15,10 +15,13 @@
   "scripts": {
     "test": "mocha ./test/test.js",
     "start": "nodemon lib/main.js --port=3000",
-    "lint": "eslint lib/** && eslint test/**"
+    "lint": "eslint lib/** && eslint test/**",
+    "typecheck": "tsc"
   },
   "devDependencies": {
     "@cygns/eslint-config-node": "6.0.0",
+    "@types/mocha": "8.2.2",
+    "@types/node": "14.14.37",
     "eslint": "7.23.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "32.3.0",
