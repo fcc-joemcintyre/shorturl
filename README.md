@@ -1,7 +1,5 @@
 # URL Shortener Service
 
-[![Build Status](https://travis-ci.org/fcc-joemcintyre/shorturl.svg?branch=master)](https://travis-ci.org/fcc-joemcintyre/shorturl)
-
 This service returns a JSON object containing a URL that compliments
 the provided URL. When the provided URL is used, the client will be
 redirected to the original URL, providing a simple way to create an
