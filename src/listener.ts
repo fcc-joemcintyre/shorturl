@@ -1,29 +1,23 @@
+import { Request, Response } from 'express';
 import * as url from 'url';
 
-/**
-  @typedef {import ('express').Request} Request
-  @typedef {import ('express').Response} Response
- */
-
 let redirectAddress = '';
-const redirects = [];
+const redirects: string[] = [];
 
 /**
  * Init with hostname and port for redirect address
- * @param {string} address Redirect address
- * @returns {void}
+ * @param address Redirect address
  */
-export function init (address) {
+export function init (address: string) {
   redirectAddress = address;
 }
 
 /**
  * Return the short URL information for a request.
- * @param {Request} req HTTP request
- * @param {Response} res HTTP response
- * @returns {void}
+ * @param req HTTP request
+ * @param res HTTP response
  */
-export function shorten (req, res) {
+export function shorten (req: Request, res: Response) {
   const inputUrl = req.query.url;
   if (typeof (inputUrl) === 'string') {
     const u = url.parse (inputUrl);
@@ -44,11 +38,10 @@ export function shorten (req, res) {
 
 /**
  * Redirect to original URL from short URL
- * @param {Request} req HTTP request
- * @param {Response} res HTTP response
- * @returns {void}
+ * @param req HTTP request
+ * @param res HTTP response
  */
-export function redirect (req, res) {
+export function redirect (req: Request, res: Response) {
   const index = Number (req.params.index);
   if (!Number.isNaN (index) && index >= 0 && index < redirects.length) {
     res.redirect (redirects[index]);

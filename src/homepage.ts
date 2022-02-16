@@ -1,9 +1,9 @@
 /**
  * Generate HTML for home page
- * @param {string} redirectAddress Host address portion of URL
- * @returns {string} HTML content
+ * @param redirectAddress Host address portion of URL
+ * @returns HTML content
  */
-export function homepage (redirectAddress) {
+export function homepage (redirectAddress: string): string {
   return (
     `<h1>URL Shortener Service</h1>
      <p>This service returns a JSON object containing a URL that compliments

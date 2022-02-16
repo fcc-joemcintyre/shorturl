@@ -1,7 +1,13 @@
 import assert from 'assert';
 import fetch from 'node-fetch';
-import { processCommand } from '../lib/cmd.js';
-import * as server from '../lib/server.js';
+import { processCommand } from '../src/cmd.js';
+import * as server from '../src/server.js';
+
+type Body = {
+  originalUrl?: string,
+  shortUrl?: string,
+  errorCode?: number,
+};
 
 before (async () => {
   await server.start ('http', 'localhost', 3000, false);
@@ -34,7 +40,7 @@ describe ('test server', () => {
     it ('should return JSON object with the shortened URL', async () => {
       const res = await fetch ('http://localhost:3000/api/url?url=http://www.infoworld.com');
       assert (res.status === 200);
-      const body = await res.json ();
+      const body: Body = await res.json () as Body;
       assert (body.originalUrl === 'http://www.infoworld.com');
       assert (body.shortUrl === 'http://localhost:3000/0');
     });
@@ -44,7 +50,7 @@ describe ('test server', () => {
     it ('should return errorCode 1 in response', async () => {
       const res = await fetch ('http://localhost:3000/api/url?url=notaurl');
       assert (res.status === 200);
-      const body = await res.json ();
+      const body: Body = await res.json () as Body;
       assert (body.errorCode === 1);
     });
   });

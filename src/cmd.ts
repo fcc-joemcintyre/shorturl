@@ -1,12 +1,11 @@
-/**
-  @typedef {object} CommandResult
-  @property {number} code Error code (0 if no error)
-  @property {boolean} exit Flag, exit or not
-  @property {number} port Port number
-  @property {string} protocol Protocol (http or https)
-  @property {string} host Host name
-  @property {boolean} paas Hosting location (hosted true, local false)
- */
+export type CommandResult = {
+  code: number,
+  exit: boolean,
+  protocol: string,
+  host: string,
+  port: number,
+  paas: boolean,
+}
 
 /**
  * Valid command options
@@ -14,13 +13,13 @@
  *  [--host] host name, default localhost
  *  [-p | --port] port to listen on, default 3000
  *  [--paas] if PaaS, don't use port externally, default false
- * @param {string[]} args Array of arguments
- * @returns {CommandResult} Command parsing result
+ * @param args Array of arguments
+ * @returns Command parsing result
  */
-export function processCommand (args) {
+export function processCommand (args: string[]): CommandResult {
   let showHelp = false;
   const errors = [];
-  const result = {
+  const result: CommandResult = {
     code: 0,
     exit: false,
     protocol: '',

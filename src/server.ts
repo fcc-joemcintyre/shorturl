@@ -1,20 +1,20 @@
 import express from 'express';
 import * as http from 'http';
+import { Server } from 'http';
 import { homepage } from './homepage.js';
 import * as listener from './listener.js';
 import * as routes from './routes.js';
 
-let server;
+let server: Server;
 
 /**
  * Start the short url server.
- * @param {string} protocol http or https
- * @param {string} host host name
- * @param {number} port HTTP port to listen to
- * @param {boolean} paas Hosted server
- * @returns {void}
+ * @param protocol http or https
+ * @param host host name
+ * @param port HTTP port to listen to
+ * @param paas Hosted server
  */
-export function start (protocol, host, port, paas) {
+export function start (protocol: string, host: string, port: number, paas: boolean) {
   console.log ('Starting Short URL server');
 
   const address = `${protocol}://${host}${((paas === false) && (port !== 80)) ? `:${port}` : ''}`;
@@ -22,7 +22,7 @@ export function start (protocol, host, port, paas) {
   // initialize and start server
   const app = express ();
   listener.init (address);
-  routes.init (app, listener);
+  routes.init (app);
 
   const html = homepage (address);
   app.get ('*', (req, res) => res.status (200).send (html));
@@ -35,7 +35,6 @@ export function start (protocol, host, port, paas) {
 
 /**
  * Stop the server
- * @returns {Promise<void>}
  */
 export async function stop () {
   if (server) {
