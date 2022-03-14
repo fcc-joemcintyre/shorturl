@@ -14,7 +14,7 @@ let server: Server;
  * @param port HTTP port to listen to
  * @param paas Hosted server
  */
-export function start (protocol: string, host: string, port: number, paas: boolean) {
+export async function start (protocol: string, host: string, port: number, paas: boolean) {
   console.log ('Starting Short URL server');
 
   const address = `${protocol}://${host}${((paas === false) && (port !== 80)) ? `:${port}` : ''}`;
@@ -28,9 +28,8 @@ export function start (protocol: string, host: string, port: number, paas: boole
   app.get ('*', (req, res) => res.status (200).send (html));
 
   server = http.createServer (app);
-  server.listen (port, () => {
-    console.log (`Short URL server listening on port ${port}`);
-  });
+  await listenAsync (server, port);
+  console.log (`Short URL server listening on port ${port}`);
 }
 
 /**
@@ -40,4 +39,16 @@ export async function stop () {
   if (server) {
     await server.close ();
   }
+}
+
+/**
+ * Async / await support for http.Server.listen
+ * @param s http.Server instance
+ * @param port port number
+ * @returns Promise to await server.listen on
+ */
+function listenAsync (s: http.Server, port: number) {
+  return new Promise ((resolve) => {
+    s.listen (port, () => { resolve (true); });
+  });
 }

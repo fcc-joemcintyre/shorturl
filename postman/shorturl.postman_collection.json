@@ -1,0 +1,259 @@
+{
+	"info": {
+		"_postman_id": "aa915e81-7af6-46f4-a324-f4cb65f8f6fa",
+		"name": "shorturl",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Home page",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test ('status to be 200', () => {",
+							"    pm.response.to.have.status (200);",
+							"})",
+							"",
+							"pm.test ('HTML content to be home page', () => {",
+							"    var text = '<h1>URL Shortener Service</h1>';",
+							"    var data = pm.response.text ();",
+							"    pm.expect (data.startsWith (text)).to.eq (true);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:3000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "invalid page",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test ('status to be 200', () => {",
+							"    pm.response.to.have.status (200);",
+							"})",
+							"",
+							"pm.test ('HTML content to be home page', () => {",
+							"    var text = '<h1>URL Shortener Service</h1>';",
+							"    var data = pm.response.text ();",
+							"    pm.expect (data.startsWith (text)).to.eq (true);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:3000/notapage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"notapage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "invalid api URI",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test ('status to be 200', () => {",
+							"    pm.response.to.have.status (200);",
+							"})",
+							"",
+							"pm.test ('HTML content to be home page', () => {",
+							"    var text = '<h1>URL Shortener Service</h1>';",
+							"    var data = pm.response.text ();",
+							"    pm.expect (data.startsWith (text)).to.eq (true);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/not",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"not"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Valid request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test ('status to be 200', () => {",
+							"    pm.response.to.have.status (200);",
+							"})",
+							"",
+							"pm.test ('response with original and short url', () => {",
+							"    var data = pm.response.json ();",
+							"    pm.expect (data.originalUrl).to.eq ('https://www.google.com');",
+							"    var index = data.shortUrl.lastIndexOf ('/') + 1;",
+							"    pm.expect (data.shortUrl.substr (0, index)).to.eq ('http://localhost:3000/');",
+							"    var number = data.shortUrl.substr (index);",
+							"    var value = Number (number);",
+							"    var valid = !Number.isNaN (value) && value >= 0;",
+							"    pm.expect (valid).to.eq (true);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/url?url=https://www.google.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"url"
+					],
+					"query": [
+						{
+							"key": "url",
+							"value": "https://www.google.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test ('status to be 200', () => {",
+							"    pm.response.to.have.status (200);",
+							"})",
+							"",
+							"pm.test ('error response', () => {",
+							"    var data = pm.response.json ();",
+							"    pm.expect (data.errorCode).to.eq (1);",
+							"    pm.expect (data.message).to.eq ('Invalid URL');",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/url?url=notaurl",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"url"
+					],
+					"query": [
+						{
+							"key": "url",
+							"value": "notaurl"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
