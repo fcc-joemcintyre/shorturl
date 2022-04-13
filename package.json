@@ -15,15 +15,18 @@
     "express": "4.17.3"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf lib && swc src -d lib",
     "test": "mocha && npm run postman:run",
     "postman:run": "cd postman && node --loader ts-node/esm test-api.ts",
     "postman:server": "cd postman && node --loader ts-node/esm test-api.ts --server",
     "start": "nodemon lib/main.js --port=3000",
-    "lint": "eslint --ext .js,.ts,.tsx --no-error-on-unmatched-pattern ."
+    "lint": "eslint --ext .js,.ts,.tsx --no-error-on-unmatched-pattern .",
+    "typecheck": "tsc"
   },
   "devDependencies": {
     "@cygns/eslint-config-node": "6.0.0",
+    "@swc/cli": "0.1.57",
+    "@swc/core": "1.2.165",
     "@types/express": "4.17.13",
     "@types/mocha": "9.1.0",
     "@types/newman": "5.3.0",
