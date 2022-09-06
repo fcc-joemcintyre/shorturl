@@ -19,7 +19,8 @@
     "test": "mocha && npm run postman:run",
     "postman:run": "cd postman && node --loader ts-node/esm test-api.ts",
     "postman:server": "cd postman && node --loader ts-node/esm test-api.ts --server",
-    "start": "nodemon lib/main.js --port=3000",
+    "dev": "nodemon lib/main.js --port=3000",
+    "start": "node lib/main.js",
     "lint": "eslint --ext .js,.ts,.tsx --no-error-on-unmatched-pattern .",
     "typecheck": "tsc"
   },
