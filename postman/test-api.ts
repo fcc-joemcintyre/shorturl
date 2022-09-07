@@ -17,7 +17,7 @@ async function main (): Promise<void> {
   const port = 3000;
 
   // start application server
-  await start ('http', 'localhost', port, false);
+  await start ('http://localhost:3000', port);
 
   // if running tests, start test runner
   if (!server) {

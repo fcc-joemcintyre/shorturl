@@ -10,7 +10,11 @@ function main () {
     process.exit (command.code);
   }
 
-  start (command.protocol, command.host, command.port, command.paas);
+  if (process.env.NODE_ENV === 'development') {
+    start (`http://localhost:${command.port}`, command.port);
+  } else {
+    start (undefined, command.port);
+  }
 }
 
 main ();

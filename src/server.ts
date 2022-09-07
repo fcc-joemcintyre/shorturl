@@ -9,23 +9,18 @@ let server: Server;
 
 /**
  * Start the short url server.
- * @param protocol http or https
- * @param host host name
- * @param port HTTP port to listen to
- * @param paas Hosted server
+ * @param localOrigin Origin when running as local server, undefined if not local
+ * @param port Port number
  */
-export async function start (protocol: string, host: string, port: number, paas: boolean) {
+export async function start (localOrigin: string | undefined, port: number) {
   console.log ('Starting Short URL server');
-
-  const address = `${protocol}://${host}${((paas === false) && (port !== 80)) ? `:${port}` : ''}`;
 
   // initialize and start server
   const app = express ();
-  listener.init (address);
+  listener.init (localOrigin);
   routes.init (app);
 
-  const html = homepage (address);
-  app.get ('*', (req, res) => res.status (200).send (html));
+  app.get ('*', (req, res) => res.status (200).send (homepage (req, localOrigin)));
 
   server = http.createServer (app);
   await listenAsync (server, port);

@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 import * as url from 'url';
 
-let redirectAddress = '';
+let redirectOrigin: string | undefined;
 const redirects: string[] = [];
 
 /**
  * Init with hostname and port for redirect address
- * @param address Redirect address
+ * @param localOrigin Origin when running as local server
  */
-export function init (address: string) {
-  redirectAddress = address;
+export function init (localOrigin: string | undefined) {
+  redirectOrigin = localOrigin;
 }
 
 /**
@@ -18,13 +18,14 @@ export function init (address: string) {
  * @param res HTTP response
  */
 export function shorten (req: Request, res: Response) {
+  const t = redirectOrigin || `${req.protocol}//${req.hostname}`;
   const inputUrl = req.query.url;
   if (typeof (inputUrl) === 'string') {
     const u = url.parse (inputUrl);
     const valid = (u.hostname && u.slashes && u.host);
     if (valid) {
       const index = redirects.length;
-      const shortUrl = `${redirectAddress}/${index}`;
+      const shortUrl = `${t}/${index}`;
       redirects.push (inputUrl);
       res.status (200).json ({
         originalUrl: inputUrl,
@@ -47,6 +48,7 @@ export function redirect (req: Request, res: Response) {
     res.redirect (redirects[index]);
   } else {
     // if not valid redirect, redirect to homepage
-    res.redirect (`${redirectAddress}/`);
+    const t = redirectOrigin || `${req.protocol}//${req.hostname}`;
+    res.redirect (`${t}/`);
   }
 }
