@@ -13,7 +13,8 @@ function main () {
   if (process.env.NODE_ENV === 'development') {
     start (`http://localhost:${command.port}`, command.port);
   } else {
-    start (undefined, command.port);
+    const port = Number (process.env.PORT) || command.port;
+    start (undefined, port);
   }
 }
 
