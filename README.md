@@ -14,22 +14,22 @@ is the URL to create a shortened URL for.
 
 An instance of the service is available at
 
-> https://shorturl-jm.herukoapp.com
+> https://shorturl-jm.onrender.com
 
 For example, using the following URL in a browser,
 
-> https://shorturl-jm.herokuapp.com/api/url?url=https://www.freecodecamp.org/news/how-to-build-and-deploy-graphql-server-in-aws-lambda-using-nodejs-and-cloudformation/
+> https://shorturl-jm.onrender.com/api/url?url=https://www.freecodecamp.org/news/how-to-build-and-deploy-graphql-server-in-aws-lambda-using-nodejs-and-cloudformation/
 
 The result is a JSON message, status 200, with the format
 
     {
       "originalURL":"https://www.freecodecamp.org/news/how-to-build-and-deploy-graphql-server-in-aws-lambda-using-nodejs-and-cloudformation/",
-      "shortURL":"https://shorturl-jm.herokuapp.com/2"
+      "shortURL":"https://shorturl-jm.onrender.com/2"
     }
 
 When using the new *shortURL* (in this case with the trailing number 2, which will vary)
 
-> https://shorturl-jm.herokuapp.com/2
+> https://shorturl-jm.onrender.com/2
 
 the browser will be redirected to the *originalURL*.
 
@@ -45,10 +45,10 @@ status 200, with the format
 
 The following scripts are defined in this package
 
-Build
+Run ESLint against lib and test directories
 
 ```
-npm run build
+npm run lint
 ```
 
 Typecheck
@@ -63,16 +63,22 @@ Run unit and integration tests
 npm test
 ```
 
+Development Build
+
+```
+npm run dev
+```
+
+Production Build
+
+```
+npm run build
+```
+
 Start local server instance
 
 ```
 npm start
-```
-
-Run ESLint against lib and test directories
-
-```
-npm run lint
 ```
 
 ## License
