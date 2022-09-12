@@ -63,22 +63,26 @@ Run unit and integration tests
 npm test
 ```
 
-Development Build
+*Development Build and Run (use in separate terminals)*
 
 ```
-npm run dev
+npm run dev:build
 ```
 
-Production Build
+```
+npm run dev:start
+```
+
+*Production Build and Run*
+
+Build
 
 ```
 npm run build
 ```
 
-Start local server instance
-
 ```
-npm start
+npm run start
 ```
 
 ## License

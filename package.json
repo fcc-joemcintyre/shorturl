@@ -15,12 +15,13 @@
     "express": "4.18.1"
   },
   "scripts": {
+    "dev:build": "swc src -d lib -w",
+    "dev:start": "NODE_ENV=development nodemon lib/main.js --port=3000",
     "build": "rm -rf lib && swc src -d lib",
+    "start": "node lib/main.js",
     "test": "mocha && npm run postman:run",
     "postman:run": "cd postman && node --loader ts-node/esm test-api.ts",
     "postman:server": "cd postman && node --loader ts-node/esm test-api.ts --server",
-    "dev": "nodemon",
-    "start": "node lib/main.js",
     "lint": "eslint --ext .js,.ts,.tsx --no-error-on-unmatched-pattern .",
     "typecheck": "tsc"
   },
@@ -34,6 +35,7 @@
     "@types/node": "18.7.15",
     "@typescript-eslint/parser": "5.36.2",
     "@typescript-eslint/eslint-plugin": "5.36.2",
+    "chokidar": "3.5.3",
     "eslint": "8.23.0",
     "eslint-plugin-import": "2.26.0",
     "mocha": "10.0.0",
@@ -44,13 +46,5 @@
   },
   "engines": {
     "node": "^18.7"
-  },
-  "nodemonConfig": {
-    "watch": "src/**",
-    "ext": "ts",
-    "env": {
-      "NODE_ENV": "development"
-    },
-    "exec": "npm run build && node lib/main.js --port=3000"
   }
 }
