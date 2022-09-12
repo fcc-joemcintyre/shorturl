@@ -7,7 +7,7 @@ import { Request } from 'express';
  * @returns HTML content
  */
 export function homepage (req: Request, localOrigin: string | undefined): string {
-  const origin = localOrigin || `${req.protocol}//${req.host}`;
+  const origin = localOrigin || `${req.protocol}//${req.hostname}`;
   return (
     `<h1>URL Shortener Service</h1>
      <p>This service returns a JSON object containing a URL that compliments
